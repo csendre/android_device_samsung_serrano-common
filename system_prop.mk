@@ -67,7 +67,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     wifi.interface=wlan0 \
     ro.qualcomm.bt.hci_transport=smd \
     persist.sys.isUsbOtgEnabled=true \
-    ro.sys.fw.dex2oat_thread_count=4
+    ro.sys.fw.dex2oat_thread_count=4 \
+    ro.sdcardfs.enable=true
 
 # QC Perf
 PRODUCT_PROPERTY_OVERRIDES += \
