@@ -94,6 +94,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     su
 
+# Shim for libc to fix camera
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/libshim_c.so:system/lib/libshim_c.so
+
 # GPS HAL
 PRODUCT_PACKAGES += \
     gps.msm8960
