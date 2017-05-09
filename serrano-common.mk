@@ -140,10 +140,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libqcomvoiceprocessing
 
-# Gello
-PRODUCT_PACKAGES += \
-    Gello
-
 # Magisk
 ROOT_METHOD := magisk
 
