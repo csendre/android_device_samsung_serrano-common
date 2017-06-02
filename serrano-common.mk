@@ -133,8 +133,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/prebuilt/SamsungDoze.apk:system/priv-app/SamsungDoze/SamsungDoze.apk
 
 # Camera
-PRODUCT_PACKAGES += \
-    Snap
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/Snap.apk:system/priv-app/Snap/Snap.apk
 
 # Voice processing
 PRODUCT_PACKAGES += \
