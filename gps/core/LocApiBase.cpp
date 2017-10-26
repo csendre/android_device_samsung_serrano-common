@@ -126,8 +126,7 @@ struct LocOpenMsg : public LocMsg {
 
 LocApiBase::LocApiBase(const MsgTask* msgTask,
                        LOC_API_ADAPTER_EVENT_MASK_T excludedMask) :
-    mExcludedMask(excludedMask), mMsgTask(msgTask),
-    mMask(0), mSupportedMsg(0)
+    mExcludedMask(excludedMask), mMsgTask(msgTask), mMask(0)
 {
     memset(mLocAdapters, 0, sizeof(mLocAdapters));
 }
@@ -200,11 +199,6 @@ void LocApiBase::removeAdapter(LocAdapterBase* adapter)
             }
         }
     }
-}
-
-void LocApiBase::updateEvtMask()
-{
-    mMsgTask->sendMsg(new LocOpenMsg(this, getEvtMask()));
 }
 
 void LocApiBase::handleEngineUpEvent()
@@ -346,11 +340,6 @@ void LocApiBase::requestNiNotify(GpsNiNotification &notify, const void* data)
 {
     // loop through adapters, and deliver to the first handling adapter.
     TO_1ST_HANDLING_LOCADAPTERS(mLocAdapters[i]->requestNiNotify(notify, data));
-}
-
-void LocApiBase::saveSupportedMsgList(uint64_t supportedMsgList)
-{
-    mSupportedMsg = supportedMsgList;
 }
 
 void* LocApiBase :: getSibling()
@@ -505,17 +494,7 @@ int LocApiBase::
     setGpsLock(unsigned int lock)
 DEFAULT_IMPL(-1)
 
-void LocApiBase::
-    installAGpsCert(const DerEncodedCertificate* pData,
-                    size_t length,
-                    uint32_t slotBitMask)
-DEFAULT_IMPL()
-
 int LocApiBase::
     getGpsLock()
 DEFAULT_IMPL(-1)
-
-enum loc_api_adapter_err LocApiBase::
-    setXtraVersionCheck(enum xtra_version_check check)
-DEFAULT_IMPL(LOC_API_ADAPTER_ERR_SUCCESS)
 } // namespace loc_core
