@@ -99,11 +99,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/libshims/libc.so:system/lib/libc.so
 
-# GPS HAL
-PRODUCT_PACKAGES += \
-    gps.msm8960 \
-    gps.conf
-
 # Lights
 PRODUCT_PACKAGES += \
     android.hardware.light@2.0-impl \
