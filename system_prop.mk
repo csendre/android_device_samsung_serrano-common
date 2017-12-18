@@ -1,6 +1,7 @@
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.android.mobiledata=false \
+    ro.ril.telephony.mqanelements=6 \
     persist.radio.add_power_save=1 \
     persist.radio.apm_sim_not_pwdn=1
 

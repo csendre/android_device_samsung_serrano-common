@@ -29,6 +29,9 @@ COMMON_PATH := device/samsung/serrano-common
 # Inherit from proprietary vendor
 -include vendor/samsung/serrano-common/BoardConfigVendor.mk
 
+# Includes
+TARGET_SPECIFIC_HEADER_PATH += device/samsung/serrano-common/include
+
 # HIDL
 DEVICE_MANIFEST_FILE := $(COMMON_PATH)/manifest.xml
 DEVICE_MATRIX_FILE := $(COMMON_PATH)/compatibility_matrix.xml
