@@ -2341,7 +2341,7 @@ Return<void> RadioImpl::setUiccSubscription(int32_t serial, const SelectUiccSub&
     RLOGD("setUiccSubscription: serial %d", serial);
 #endif
     RequestInfo *pRI = android::addRequestToList(serial, mSlotId,
-            RIL_REQUEST_SET_UICC_SUBSCRIPTION);
+            115);
     if (pRI == NULL) {
         return Void();
     }
@@ -2353,7 +2353,7 @@ Return<void> RadioImpl::setUiccSubscription(int32_t serial, const SelectUiccSub&
     rilUiccSub.sub_type = (RIL_SubscriptionType) uiccSub.subType;
     rilUiccSub.act_status = (RIL_UiccSubActStatus) uiccSub.actStatus;
 
-    CALL_ONREQUEST(pRI->pCI->requestNumber, &rilUiccSub, sizeof(rilUiccSub), pRI, mSlotId);
+    CALL_ONREQUEST(115, &rilUiccSub, sizeof(rilUiccSub), pRI, mSlotId);
     return Void();
 }
 
@@ -2441,7 +2441,7 @@ Return<void> RadioImpl::setDataProfile(int32_t serial, const hidl_vec<DataProfil
 #if VDBG
     RLOGD("setDataProfile: serial %d", serial);
 #endif
-    RequestInfo *pRI = android::addRequestToList(serial, mSlotId, RIL_REQUEST_SET_DATA_PROFILE);
+    RequestInfo *pRI = android::addRequestToList(serial, mSlotId, 116);
     if (pRI == NULL) {
         return Void();
     }
@@ -2456,7 +2456,7 @@ Return<void> RadioImpl::setDataProfile(int32_t serial, const hidl_vec<DataProfil
 
         if (dataProfiles == NULL) {
             RLOGE("Memory allocation failed for request %s",
-                    requestToString(pRI->pCI->requestNumber));
+                    requestToString(116));
             sendErrorResponse(pRI, RIL_E_NO_MEMORY);
             return Void();
         }
@@ -2465,7 +2465,7 @@ Return<void> RadioImpl::setDataProfile(int32_t serial, const hidl_vec<DataProfil
             (RIL_DataProfileInfo **) calloc(num, sizeof(RIL_DataProfileInfo *));
         if (dataProfilePtrs == NULL) {
             RLOGE("Memory allocation failed for request %s",
-                    requestToString(pRI->pCI->requestNumber));
+                    requestToString(116));
             free(dataProfiles);
             sendErrorResponse(pRI, RIL_E_NO_MEMORY);
             return Void();
@@ -2520,7 +2520,7 @@ Return<void> RadioImpl::setDataProfile(int32_t serial, const hidl_vec<DataProfil
 
         if (dataProfiles == NULL) {
             RLOGE("Memory allocation failed for request %s",
-                    requestToString(pRI->pCI->requestNumber));
+                    requestToString(116));
             sendErrorResponse(pRI, RIL_E_NO_MEMORY);
             return Void();
         }
@@ -2529,7 +2529,7 @@ Return<void> RadioImpl::setDataProfile(int32_t serial, const hidl_vec<DataProfil
             (RIL_DataProfileInfo_v15 **) calloc(num, sizeof(RIL_DataProfileInfo_v15 *));
         if (dataProfilePtrs == NULL) {
             RLOGE("Memory allocation failed for request %s",
-                    requestToString(pRI->pCI->requestNumber));
+                    requestToString(116));
             free(dataProfiles);
             sendErrorResponse(pRI, RIL_E_NO_MEMORY);
             return Void();
