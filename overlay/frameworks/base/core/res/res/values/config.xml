@@ -284,4 +284,7 @@
          disable the overlay mechanism can set it to false.
          -->
     <bool name="config_enableHardwareFlpOverlay" translatable="false">false</bool>
+
+    <!-- Hardware keys on/off option -->
+    <bool name="config_hwKeysPref">true</bool>
 </resources>
