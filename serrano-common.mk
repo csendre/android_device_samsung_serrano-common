@@ -137,6 +137,10 @@ PRODUCT_PACKAGES += \
     fsck.f2fs \
     mkfs.f2fs
 
+# Root
+PRODUCT_PACKAGES += \
+    Su
+
 # Doze
 PRODUCT_PACKAGES += \
     SamsungDoze
