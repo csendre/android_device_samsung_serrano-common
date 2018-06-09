@@ -141,6 +141,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     Su
 
+# Shims
+PRODUCT_PACKAGES += \
+    libshim_camera
+
 # Doze
 PRODUCT_PACKAGES += \
     SamsungDoze
