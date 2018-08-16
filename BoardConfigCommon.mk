@@ -32,6 +32,9 @@ COMMON_PATH := device/samsung/serrano-common
 # Includes
 TARGET_SPECIFIC_HEADER_PATH += device/samsung/serrano-common/include
 
+# The first api level the device has commercially launched on
+PRODUCT_SHIPPING_API_LEVEL := 19
+
 # HIDL
 DEVICE_MANIFEST_FILE := $(COMMON_PATH)/manifest.xml
 DEVICE_MATRIX_FILE := $(COMMON_PATH)/compatibility_matrix.xml
