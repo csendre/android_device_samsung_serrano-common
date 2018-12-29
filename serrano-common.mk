@@ -97,11 +97,13 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/vendor/etc/thermald.conf:$(TARGET_COPY_OUT_VENDOR)/etc/thermald.conf
 
+# GPS config
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/etc/gps.conf:system/etc/gps.conf
+
 # GPS HAL
 PRODUCT_PACKAGES += \
-    gps.msm8960 \
-    gps.conf \
-    sap.conf
+    gps.msm8960
 
 # IR package
 PRODUCT_PACKAGES += \
@@ -148,6 +150,10 @@ PRODUCT_PACKAGES += \
 # FlipFlap
 PRODUCT_PACKAGES += \
     FlipFlap
+
+# Telephony
+PRODUCT_PACKAGES += \
+    libsecnativefeature
 
 # call common serrano system props
 $(call inherit-product, device/samsung/serrano-common/system_prop.mk)
