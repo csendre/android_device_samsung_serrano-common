@@ -1,17 +1,12 @@
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.com.android.mobiledata=false \
-    ro.ril.telephony.mqanelements=6 \
-    persist.radio.add_power_save=1 \
-    persist.radio.apm_sim_not_pwdn=1 \
-    persist.radio.no_wait_for_card=1
+    ro.ril.telephony.qan_resp_strings=6 \
+    persist.radio.add_power_save=1
 
 # GPS
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.gps.qmienabled=true \
     persist.gps.qc_nlp_in_use=1 \
-    ro.qc.sdk.izat.premium_enabled=0 \
-    ro.qc.sdk.izat.service_mask=0x0 \
     ro.gps.agps_provider=1
 
 # Media

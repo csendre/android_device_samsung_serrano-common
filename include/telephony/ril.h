@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2006 The Android Open Source Project
+ * Copyright (C) 2018 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -358,7 +359,7 @@ typedef enum {
     PREF_NET_TYPE_LTE_GSM_WCDMA            = 9, /* LTE, GSM/WCDMA */
     PREF_NET_TYPE_LTE_CMDA_EVDO_GSM_WCDMA  = 10, /* LTE, CDMA, EvDo, GSM/WCDMA */
     PREF_NET_TYPE_LTE_ONLY                 = 11, /* LTE only */
-    PREF_NET_TYPE_LTE_WCDMA                = 12,  /* LTE/WCDMA */
+    PREF_NET_TYPE_LTE_WCDMA                = 12, /* LTE/WCDMA */
     PREF_NET_TYPE_TD_SCDMA_ONLY            = 13, /* TD-SCDMA only */
     PREF_NET_TYPE_TD_SCDMA_WCDMA           = 14, /* TD-SCDMA and WCDMA */
     PREF_NET_TYPE_TD_SCDMA_LTE             = 15, /* TD-SCDMA and LTE */
@@ -420,10 +421,10 @@ typedef struct {
 
 typedef struct {
     RIL_CallState   state;
-    char            index;      /* Connection Index for use with, eg, AT+CHLD */
-    char            call_id;    /* Samsung */
-    char            foo1;       /* Samsung */
-    char            foo2;       /* Samsung */
+    unsigned char   index;      /* Connection Index for use with, eg, AT+CHLD */
+    unsigned char   call_id;    /* Samsung field */
+    unsigned char   pad;        /* Unsigned gap padding */
+    char            pad1;       /* Signed gap padding */
     int             toa;        /* type of address, eg 145 = intl */
     char            isMpty;     /* nonzero if is mpty call */
     char            isMT;       /* nonzero if call is mobile terminated */
@@ -433,12 +434,10 @@ typedef struct {
     char            isVoicePrivacy;     /* nonzero if CDMA voice privacy mode is active */
     char *          number;     /* Remote party number */
     int             numberPresentation; /* 0=Allowed, 1=Restricted, 2=Not Specified/Unknown 3=Payphone */
-    char            isVideo;    /* Samsung */
-    char            call_type;  /* Samsung */
-    char            call_domain;/* Samsung */
-    int             namePresentation; /* 0=Allowed, 1=Restricted, 2=Not Specified/Unknown 3=Payphone */
-    char *          csv;        /* Samsung */
     char *          name;       /* Remote party name */
+    int             namePresentation; /* 0=Allowed, 1=Restricted, 2=Not Specified/Unknown 3=Payphone */
+    void *          call_details1; /* Padding for Samsung's call detail fields */
+    void *          call_details2; /* Padding for Samsung's call detail fields */
     RIL_UUS_Info *  uusInfo;    /* NULL or Pointer to User-User Signaling Information */
 } RIL_Call;
 
@@ -591,6 +590,11 @@ typedef struct {
                          -1 if unknown or not applicable*/
 } RIL_SMS_Response;
 
+typedef struct {
+    RIL_SMS_Response response;
+    int retryCount;   /* Samsung */
+} RIL_SMS_Response_Ext;
+
 /** Used by RIL_REQUEST_WRITE_SMS_TO_SIM */
 typedef struct {
     int status;     /* Status of message.  See TS 27.005 3.1, "<stat>": */
@@ -740,7 +744,7 @@ typedef struct {
     const char * mcc;
     const char * mnc;
     RIL_CarrierMatchType match_type;   /* Specify match type for the carrier.
-                                        * If it’s RIL_MATCH_ALL, match_data is null;
+                                        * If it's RIL_MATCH_ALL, match_data is null;
                                         * otherwise, match_data is the value for the match type.
                                         */
     const char * match_data;
@@ -1118,11 +1122,12 @@ typedef struct
   int              pin1_replaced;   /* applicable to USIM, CSIM & ISIM */
   RIL_PinState     pin1;
   RIL_PinState     pin2;
-  int              foo1;            // pin1_num_retries
-  int              foo2;            // puk1_num_retries
-  int              foo3;            // pin2_num_retries
-  int              foo4;            // puk2_num_retries
-  int              foo5;            // perso_unblock_retries
+  /* Samsung SIM PIN/Unlock fields */
+  int              pin1_num_retries;
+  int              puk1_num_retries;
+  int              pin2_num_retries;
+  int              puk2_num_retries;
+  int              perso_unblock_retries;
 } RIL_AppStatus;
 
 /* Deprecated, use RIL_CardStatus_v6 */
@@ -6332,60 +6337,6 @@ typedef struct {
 
 #define RIL_RESPONSE_ACKNOWLEDGEMENT 800
 
-/**********************************************************
- * SAMSUNG REQUESTS
- **********************************************************/
-#define SAMSUNG_REQUEST_BASE 10000
-#define RIL_REQUEST_GET_CELL_BROADCAST_CONFIG 10002
-#define RIL_REQUEST_SEND_ENCODED_USSD 10005
-#define RIL_REQUEST_SET_PDA_MEMORY_STATUS 10006
-#define RIL_REQUEST_GET_PHONEBOOK_STORAGE_INFO 10007
-#define RIL_REQUEST_GET_PHONEBOOK_ENTRY 10008
-#define RIL_REQUEST_ACCESS_PHONEBOOK_ENTRY 10009
-#define RIL_REQUEST_DIAL_VIDEO_CALL 10010
-#define RIL_REQUEST_CALL_DEFLECTION 10011
-#define RIL_REQUEST_USIM_PB_CAPA 10013
-#define RIL_REQUEST_LOCK_INFO 10014
-#define RIL_REQUEST_DIAL_EMERGENCY_CALL 10016
-#define RIL_REQUEST_STK_SIM_INIT_EVENT 10018
-#define RIL_REQUEST_GET_LINE_ID 10019
-#define RIL_REQUEST_SET_LINE_ID 10020
-#define RIL_REQUEST_GET_SERIAL_NUMBER 10021
-#define RIL_REQUEST_GET_MANUFACTURE_DATE_NUMBER 10022
-#define RIL_REQUEST_GET_BARCODE_NUMBER 10023
-#define RIL_REQUEST_UICC_GBA_AUTHENTICATE_BOOTSTRAP 10024
-#define RIL_REQUEST_UICC_GBA_AUTHENTICATE_NAF 10025
-#define RIL_REQUEST_MODIFY_CALL_INITIATE 10031
-#define RIL_REQUEST_MODIFY_CALL_CONFIRM 10032
-#define RIL_REQUEST_SAFE_MODE 10033
-#define RIL_REQUEST_SET_VOICE_DOMAIN_PREF 10034
-#define RIL_REQUEST_PS_ATTACH 10035
-#define RIL_REQUEST_PS_DETACH 10036
-#define RIL_REQUEST_ACTIVATE_DATA_CALL 10037
-#define RIL_REQUEST_CHANGE_SIM_PERSO 10038
-#define RIL_REQUEST_ENTER_SIM_PERSO 10039
-#define RIL_REQUEST_GET_TIME_INFO 10040
-#define RIL_REQUEST_RIL_REQUEST_CDMA_SEND_SMS_EXPECT_MORE 10041
-#define RIL_REQUEST_OMADM_SETUP_SESSION 10042
-#define RIL_REQUEST_OMADM_SERVER_START_SESSION 10043
-#define RIL_REQUEST_OMADM_CLIENT_START_SESSION 10044
-#define RIL_REQUEST_OMADM_SEND_DATA 10045
-#define RIL_REQUEST_CDMA_GET_DATAPROFILE 10046
-#define RIL_REQUEST_CDMA_SET_DATAPROFILE 10047
-#define RIL_REQUEST_CDMA_GET_SYSTEMPROPERTIES 10048
-#define RIL_REQUEST_CDMA_SET_SYSTEMPROPERTIES 10049
-#define RIL_REQUEST_SEND_SMS_COUNT 10050
-#define RIL_REQUEST_SEND_SMS_MSG 10051
-#define RIL_REQUEST_SEND_SMS_MSG_READ_STATUS 10052
-#define RIL_REQUEST_MODEM_HANGUP 10053
-#define RIL_REQUEST_SET_SIM_POWER 10054
-#define RIL_REQUEST_SET_PREFERRED_NETWORK_LIST 10055
-#define RIL_REQUEST_GET_PREFERRED_NETWORK_LIST 10056
-#define RIL_REQUEST_HANGUP_VT 10057
-#define RIL_REQUEST_REQUEST_HOLD 10058
-#define RIL_REQUEST_SET_LTE_BAND_MODE 10059
-#define RIL_REQUEST_QUERY_LOCK_NETWORKS 10060
-
 /***********************************************************************/
 
 
@@ -6919,6 +6870,7 @@ typedef struct {
  * ((int *)data)[0] is of type const RIL_SrvccState
  *
  */
+
 #define RIL_UNSOL_SRVCC_STATE_NOTIFY 1039
 
 /**
@@ -7052,50 +7004,6 @@ typedef struct {
  * "response" is a const RIL_KeepaliveStatus *
  */
 #define RIL_UNSOL_KEEPALIVE_STATUS 1050
-
-/**********************************************************
- * SAMSUNG UNSOLS
- **********************************************************/
-#define SAMSUNG_UNSOL_BASE 11000
-#define RIL_UNSOL_RELEASE_COMPLETE_MESSAGE 11001
-#define RIL_UNSOL_STK_SEND_SMS_RESULT 11002
-#define RIL_UNSOL_STK_CALL_CONTROL_RESULT 11003
-#define RIL_UNSOL_DUN_CALL_STATUS 11004
-#define RIL_UNSOL_O2_HOME_ZONE_INFO 11007
-#define RIL_UNSOL_DEVICE_READY_NOTI 11008
-#define RIL_UNSOL_GPS_NOTI 11009
-#define RIL_UNSOL_AM 11010
-#define RIL_UNSOL_DUN_PIN_CONTROL_SIGNAL 11011
-#define RIL_UNSOL_DATA_SUSPEND_RESUME 11012
-#define RIL_UNSOL_SAP 11013
-#define RIL_UNSOL_HSDPA_STATE_CHANGED 11016
-#define RIL_UNSOL_WB_AMR_STATE 11017
-#define RIL_UNSOL_TWO_MIC_STATE 11018
-#define RIL_UNSOL_DHA_STATE 11019
-#define RIL_UNSOL_UART 11020
-#define RIL_UNSOL_SIM_PB_READY 11021
-#define RIL_UNSOL_PCMCLOCK_STATE 11022
-#define RIL_UNSOL_1X_SMSPP 11023
-#define RIL_UNSOL_VE 11024
-#define RIL_UNSOL_IMS_REGISTRATION_STATE_CHANGED 11027
-#define RIL_UNSOL_MODIFY_CALL 11028
-#define RIL_UNSOL_SRVCC_HANDOVER 11029
-#define RIL_UNSOL_CS_FALLBACK 11030
-#define RIL_UNSOL_VOICE_SYSTEM_ID 11032
-#define RIL_UNSOL_IMS_RETRYOVER 11034
-#define RIL_UNSOL_STK_ALPHA_ID 11035
-#define RIL_UNSOL_PB_INIT_COMPLETE 11036
-#define RIL_UNSOL_RTS_INDICATION 11041
-#define RIL_UNSOL_RILD_RESET_NOTI 11042
-#define RIL_UNSOL_HOME_NETWORK_NOTI 11043
-#define RIL_UNSOL_OMADM_SEND_DATA 11045
-#define RIL_UNSOL_DUN 11046
-#define RIL_UNSOL_SYSTEM_REBOOT 11047
-#define RIL_UNSOL_UTS_GETSMSCOUNT 11049
-#define RIL_UNSOL_UTS_GETSMSMSG 11050
-#define RIL_UNSOL_UTS_GET_UNREAD_SMS_STATUS 11051
-#define RIL_UNSOL_MIP_CONNECT_STATUS 11052
-#define RIL_UNSOL_STK_CALL_STATUS 11053
 
 /***********************************************************************/
 
