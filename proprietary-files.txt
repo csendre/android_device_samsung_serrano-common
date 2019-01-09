@@ -39,7 +39,6 @@ vendor/lib/libsc-a3xx.so
 etc/plmn_se13.bin
 vendor/bin/qmuxd
 vendor/bin/rmt_storage
-vendor/lib/libconfigdb.so
 vendor/lib/libdiag.so
 vendor/lib/libdsutils.so
 vendor/lib/libidl.so
@@ -63,8 +62,9 @@ vendor/bin/radish
 
 # GPS
 vendor/bin/irsc_util
+
 vendor/lib/libdsi_netctrl.so
-vendor/lib/libgeofence.o
+vendor/lib/libgeofence.so
 vendor/lib/libizat_core.so
 vendor/lib/liblbs_core.so
 vendor/lib/libloc_api_v02.so
