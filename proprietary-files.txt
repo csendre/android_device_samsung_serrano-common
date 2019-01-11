@@ -74,8 +74,8 @@ vendor/lib/libmdmdetect.so
 vendor/lib/libperipheral_client.so
 
 # Sensors
+vendor/lib/hw/sensors.vendor.msm8960.so
 vendor/bin/geomagneticd
-vendor/lib/libsensors.so
 
 # Camera
 vendor/bin/mm-qcamera-daemon
